@@ -1,0 +1,28 @@
+{
+  "name": "alpha-orm",
+  "version": "1.0.0",
+  "description": "An extraordinary database ORM like none yet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claretnnamocha/alpha-orm.git"
+  },
+  "keywords": [
+    "orm",
+    "database",
+    "db",
+    "alpha-orm"
+  ],
+  "author": "Claret Nnamocha <devclareo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/claretnnamocha/alpha-orm/issues"
+  },
+  "homepage": "https://github.com/claretnnamocha/alpha-orm#readme",
+  "dependencies": {
+    "mysql": "^2.17.1"
+  }
+}
