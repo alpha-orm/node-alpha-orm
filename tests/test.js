@@ -7,7 +7,7 @@ AlphaORM.setup('mysql',{
   database : 'hng'
 })
 
-AlphaORM.find('records','id = :id ',{id : "soma"}).then((record)=>{
+AlphaORM.find('records','id = :id ',{id : 1}).then((record)=>{
 	console.log(record)
 })
 
