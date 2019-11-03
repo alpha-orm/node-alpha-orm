@@ -2,8 +2,8 @@
 An extraordinary javascript database orm
 
 ## Features
-* Automatically creates tables and columns on the fly
-* No configuration required, simply create database
+* Automatically creates tables and columns.
+* No configuration required, simply create database.
 
 
 ## Examples
