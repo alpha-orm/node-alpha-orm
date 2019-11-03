@@ -12,7 +12,7 @@ class MySQLQueryBuilder {
         let sql = `ALTER TABLE \`${tablename}\` `
         let columns = Object.keys(map)
         for (let column of columns) {
-            sql += `ADD COLUMN \`${column}\` ${map[column]}`
+            sql += `ADD COLUMN IF NOT EXISTS \`${column}\` ${map[column]}`
             sql += column == columns[columns.length - 1] ? `;` : ','
         }
         return sql
@@ -54,13 +54,33 @@ class MySQLQueryBuilder {
         return sql
     }
 
+    static updateRecord(tablename, map, id){
+        let sql = `UPDATE \`${tablename}\` `
+        let columns = Object.keys(map)
+        for (let column of columns) {            
+            let colVal = map[column]
+            if (typeof colVal === 'boolean') {
+                colVal = true ? 1 : 0;
+            }
+            colVal = JSON.stringify(colVal)
+            sql += column == columns[0] ? `SET ` : ``            
+            sql += `\`${column}\` = ${colVal}`            
+            sql += column == columns[columns.length - 1] ? ` WHERE \`id\` = ${id};` : ', '
+        }
+        return sql
+    }
+
+    static deleteRecord(map){
+        return `DELETE FROM \`${map._tablename}\` WHERE \`id\` = ${map._id}`
+    }
+
     static find(single, tablename, where, map = {}) {
         let sql = `SELECT * FROM \`${tablename}\` WHERE `
         let columns = Object.keys(map)
         let matches = where.match(/:[a-zA-Z]+/g)
         if (is_object_empty(map)) {
             sql += where
-            sql += single ? 'LIMIT 1;' : ';'
+            sql += single ? ' LIMIT 1;' : ';'
             return sql
         }
         if (matches.length !== Object.keys(map).length) {
@@ -80,7 +100,7 @@ class MySQLQueryBuilder {
             where = where.replace(match, val)
         })
         sql += where
-        sql += single ? 'LIMIT 1;' : ';'
+        sql += single ? ' LIMIT 1;' : ';'
         return sql
     }
 

@@ -31,7 +31,7 @@ class AlphaORM {
             }
 
             for (let col in alpha_record) {
-                if (col == '_tablename' | col == 'id') {
+                if (col == '__tablename' | col == '_id') {
                     continue
                 }
                 if (col.includes('_')) {
@@ -41,36 +41,14 @@ class AlphaORM {
                     throw new Error('Column names should not have a space')
                 }
             }
-
-            let tablename = alpha_record._tablename
-
-            // alow for custom id?
-            alpha_record.id = null
-
-            delete alpha_record._tablename
-
-            let columns_db = await DriverInterface.getDriver(AlphaORM.DRIVER).getColumns(tablename)
-            let columns_record = Object.keys(alpha_record)
-            let { updated_columns, existing } = GeneratorInterface.getGenerator(AlphaORM.DRIVER).checkColumnUpdates(columns_db, columns_record, alpha_record)
-            let diff_array = array_difference(columns_record, existing)
-            let new_columns = GeneratorInterface.getGenerator(AlphaORM.DRIVER).creatNewColumns(diff_array, alpha_record)
-
-            if (!is_object_empty(updated_columns)) {
-                await DriverInterface.getDriver(AlphaORM.DRIVER).updateColumns(tablename, updated_columns)
-            }
-            if (!is_object_empty(new_columns)) {
-                await DriverInterface.getDriver(AlphaORM.DRIVER).createColumns(tablename, new_columns)
-            }
-            alpha_record.id = await DriverInterface.getDriver(AlphaORM.DRIVER).insertRecord(tablename, alpha_record)
-            alpha_record._tablename = tablename
-            return true
+            alpha_record = await DriverInterface.getDriver(AlphaORM.DRIVER).store(alpha_record)
         } catch (e) {
             throw e
         }
     }
 
-    static destroy(alpha_db) {
-
+    static async drop(alpha_record) {
+        await DriverInterface.getDriver(AlphaORM.DRIVER).drop(alpha_record)
     }
 
     static async create(table_name) {
