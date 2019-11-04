@@ -1,6 +1,6 @@
 {
   "name": "alpha-orm",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An extraordinary database ORM like none yet",
   "main": "index.js",
   "scripts": {
