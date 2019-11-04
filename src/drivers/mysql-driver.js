@@ -66,11 +66,13 @@ class MySQLDriver extends DriverInterface {
         let id = alpha_record._id
         let tablename = alpha_record._tablename
         delete alpha_record.id
-        delete alpha_record._id
-        delete alpha_record.__tablename
+        delete alpha_record._tablename
         let update = await this.query(MySQLQueryBuilder.updateRecord(tablename, alpha_record, id))
         alpha_record.id = id
-        alpha_record.__tablename = tablename
+        alpha_record._tablename = tablename
+        Object.defineProperty(alpha_record, '_tablename', {
+          writable: false
+        });
         return alpha_record
     }
 

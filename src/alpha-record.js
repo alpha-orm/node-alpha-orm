@@ -1,7 +1,11 @@
 class AlphaRecord {
     constructor(tablename, fresh = true) {
         if (fresh) { this.id = null }
-        this.__tablename = tablename
+        this._tablename = tablename
+        Object.defineProperty(this, '_tablename', {
+            writable: false
+        });
+
     }
 
     static create(tablename, rows, single = false) {
@@ -12,17 +16,12 @@ class AlphaRecord {
             for (let column of columns) {
                 record[column] = row[column]
             }
+            Object.defineProperty(record, 'id', {
+                writable: false
+            });
             records.push(record)
         }
         return single ? records[0] : records
-    }
-
-    get _id() {
-        return this.id;
-    }
-
-    get _tablename() {
-        return this.__tablename;
     }
 }
 

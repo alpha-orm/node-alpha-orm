@@ -31,7 +31,7 @@ class AlphaORM {
             }
 
             for (let col in alpha_record) {
-                if (col == '__tablename' | col == '_id') {
+                if (col == '_tablename' | col == '_id') {
                     continue
                 }
                 if (col.includes('_')) {
