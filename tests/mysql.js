@@ -18,7 +18,7 @@ async function creating() {
     product.stock = 50
     await AlphaORM.store(product)
 }
-// creating()
+creating()
 
 
 /**

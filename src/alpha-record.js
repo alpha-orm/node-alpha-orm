@@ -16,6 +16,10 @@ class AlphaRecord {
             for (let column of columns) {
                 record[column] = row[column]
             }
+            record._id = id
+            Object.defineProperty(record, '_id', {
+                writable: false
+            });
             Object.defineProperty(record, 'id', {
                 writable: false
             });

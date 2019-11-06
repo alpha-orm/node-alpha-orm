@@ -25,15 +25,15 @@ class AlphaORM {
             if ((alpha_record instanceof AlphaRecord) == false) {
                 throw new Error('Parameter passed into method `store` must be of type `AlphaRecord`')
             }
-            alpha_record.forEach((value, index) => {
-                if (index == '_tablename') { continue }
+            for (let index of Object.keys(alpha_record)) {
+                if (index == '_tablename' | index == '_id') { continue }
                 if (index.includes('_')) {
                     throw new Error("Column names cannot contain '_'")
                 }
                 if ((index.indexOf(' ') > -1)) {
                     throw new Error('Column names should not have spaces in them')
                 }
-            })
+            }
             alpha_record = await DriverInterface.getDriver(AlphaORM.DRIVER).store(alpha_record)
         } catch (e) {
             throw e

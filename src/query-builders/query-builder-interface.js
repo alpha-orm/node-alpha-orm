@@ -42,6 +42,9 @@ class QueryBuilderInterface {
                 const { MySQLQueryBuilder } = require('./mysql-query-builder')
                 return MySQLQueryBuilder
                 break;
+            default:
+                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
+                break;
         }
     }
 }

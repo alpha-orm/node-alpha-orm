@@ -52,7 +52,7 @@ class DriverInterface {
     }
 
     static getDriver(driver) {
-        let driver = driver.toLocaleLowerCase()
+        driver = driver.toLocaleLowerCase()
         switch (driver) {
             case 'mysql':
                 const { MySQLDriver } = require('./mysql-driver')

@@ -18,6 +18,9 @@ class GeneratorInterface {
                 const { MySQLGenerator } = require('./mysql-generator')
                 return MySQLGenerator
                 break;
+            default:
+                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
+                break;
         }
     }
 }
