@@ -31,7 +31,7 @@ class MySQLDriver extends DriverInterface {
             return response
         } catch (e) {
             console.log(e)
-        }finally{
+        } finally {
             let g = await this.CONNECTION.destroy()
         }
     }
@@ -46,15 +46,15 @@ class MySQLDriver extends DriverInterface {
     }
 
     static async insertRecord(tablename, alpha_record) {
-        let inserted = {}               
-        for(let a of Object.keys(alpha_record)){
-            if (alpha_record[a] instanceof AlphaRecord){
+        let inserted = {}
+        for (let a of Object.keys(alpha_record)) {
+            if (alpha_record[a] instanceof AlphaRecord) {
                 inserted[a] = alpha_record[a]
                 alpha_record[`${alpha_record[a]._tablename}_id`] = alpha_record[a].id
                 delete alpha_record[a]
             }
         }
-        let insert = await this.query(MySQLQueryBuilder.insertRecord(tablename, alpha_record))        
+        let insert = await this.query(MySQLQueryBuilder.insertRecord(tablename, alpha_record))
         for (let a of Object.keys(inserted)) {
             alpha_record[a] = inserted[a]
             delete alpha_record[`${alpha_record[a]._tablename}_id`]
@@ -71,7 +71,7 @@ class MySQLDriver extends DriverInterface {
         alpha_record.id = id
         alpha_record._tablename = tablename
         Object.defineProperty(alpha_record, '_tablename', {
-          writable: false
+            writable: false
         });
         return alpha_record
     }
@@ -101,21 +101,21 @@ class MySQLDriver extends DriverInterface {
         return AlphaRecord.create(tablename, rows)
     }
 
-    static async store(alpha_record,base=true) {
+    static async store(alpha_record, base = true) {
         try {
             if (alpha_record._id) {
-                return  this.updateRecord(alpha_record)
-            }            
-            for(let a of Object.keys(alpha_record)){
-                if (alpha_record[a] instanceof AlphaRecord){
-                    alpha_record[a] = await this.store(alpha_record[a],false)
+                return this.updateRecord(alpha_record)
+            }
+            for (let a of Object.keys(alpha_record)) {
+                if (alpha_record[a] instanceof AlphaRecord) {
+                    alpha_record[a] = await this.store(alpha_record[a], false)
                 }
             }
             let tablename = alpha_record._tablename
 
             let columns_db = await this.getColumns(tablename)
 
-            let { updated_columns, new_columns } = await MySQLGenerator.columns(columns_db,alpha_record)
+            let { updated_columns, new_columns } = await MySQLGenerator.columns(columns_db, alpha_record)
 
             if (!is_object_empty(updated_columns)) {
                 await this.updateColumns(tablename, updated_columns)

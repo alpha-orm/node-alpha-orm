@@ -54,23 +54,23 @@ class MySQLQueryBuilder {
         return sql
     }
 
-    static updateRecord(tablename, map, id){
+    static updateRecord(tablename, map, id) {
         let sql = `UPDATE \`${tablename}\` `
         let columns = Object.keys(map)
-        for (let column of columns) {            
+        for (let column of columns) {
             let colVal = map[column]
             if (typeof colVal === 'boolean') {
                 colVal = true ? 1 : 0;
             }
             colVal = JSON.stringify(colVal)
-            sql += column == columns[0] ? `SET ` : ``            
-            sql += `\`${column}\` = ${colVal}`            
+            sql += column == columns[0] ? `SET ` : ``
+            sql += `\`${column}\` = ${colVal}`
             sql += column == columns[columns.length - 1] ? ` WHERE \`id\` = ${id};` : ', '
         }
         return sql
     }
 
-    static deleteRecord(map){
+    static deleteRecord(map) {
         return `DELETE FROM \`${map._tablename}\` WHERE \`id\` = ${map._id}`
     }
 

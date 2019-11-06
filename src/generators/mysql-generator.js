@@ -44,7 +44,7 @@ class MySQLGenerator extends GeneratorInterface {
             } else {
                 if (alpha_record[col] instanceof AlphaRecord) {
                     new_columns[`${alpha_record[col]._tablename}_id`] = MySQLQueryBuilder.DATA_TYPE['int']
-                }else{
+                } else {
                     new_columns[col] = MySQLQueryBuilder.DATA_TYPE[get_type(alpha_record[col])]
                 }
             }
@@ -52,7 +52,7 @@ class MySQLGenerator extends GeneratorInterface {
         return new_columns
     }
 
-    static async columns(columns_db,alpha_record,base = true) {
+    static async columns(columns_db, alpha_record, base = true) {
         let tablename = alpha_record._tablename
 
         // alow for custom id?

@@ -1,27 +1,39 @@
 class QueryBuilderInterface {
 
-    createTable(tablename) {
-        throw new Error('The `createTable` method is not yet implemented')
+    static createTable(tablename) {
+        throw new Error("This builder does not  support the 'createTable' function")
     }
 
-    createColumns(tablename, map) {
-        throw new Error('The `createColumns` method is not yet implemented')
+    static createColumns(tablename, map) {
+        throw new Error("This builder does not  support the 'createColumns' function")
     }
 
-    getAll(tablename) {
-        throw new Error('The `getAll` method is not yet implemented')
+    static getColumns(tablename) {
+        throw new Error("This builder does not  support the 'getColumns' function")
     }
 
-    getColumns(tablename) {
-        throw new Error('The `getColumns` method is not yet implemented')
+    static updateColumns(tablename, map) {
+        throw new Error("This builder does not  support the 'updateColumns' function")
     }
 
-    updateColumns(tablename, map) {
-        throw new Error('The `updateColumns` method is not yet implemented')
+    static getAllRecords(tablename) {
+        throw new Error("This builder does not  support the 'getAllRecords' function")
     }
 
-    insertRecord(tablename, map) {
-        throw new Error('The `insertRecord` method is not yet implemented')
+    static insertRecord(tablename, map) {
+        throw new Error("This builder does not  support the 'insertRecord' function")
+    }
+
+    static updateRecord(tablename, map, id) {
+        throw new Error("This builder does not  support the 'updateRecord' function")
+    }
+
+    static deleteRecord(map) {
+        throw new Error("This builder does not  support the 'deleteRecord' function")
+    }
+
+    static find(single, tablename, where, map = {}) {
+        throw new Error("This builder does not  support the 'find' function")
     }
 
     static getQueryBuilder(driver) {

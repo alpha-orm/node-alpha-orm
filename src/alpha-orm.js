@@ -1,9 +1,5 @@
 const { DriverInterface } = require('./drivers/driver-interface')
-const { QueryBuilderInterface } = require('./query-builders/query-builder-interface')
-const { GeneratorInterface } = require('./generators/generator-interface')
 const { AlphaRecord } = require('./alpha-record')
-const util = require('util')
-const { array_difference, get_type, is_object_empty } = require('./utilities')
 
 class AlphaORM {
 
@@ -29,18 +25,15 @@ class AlphaORM {
             if ((alpha_record instanceof AlphaRecord) == false) {
                 throw new Error('Parameter passed into method `store` must be of type `AlphaRecord`')
             }
-
-            for (let col in alpha_record) {
-                if (col == '_tablename' | col == '_id') {
-                    continue
+            alpha_record.forEach((value, index) => {
+                if (index == '_tablename') { continue }
+                if (index.includes('_')) {
+                    throw new Error("Column names cannot contain '_'")
                 }
-                if (col.includes('_')) {
-                    throw new Error('Column names cannot contain `_` symbol')
+                if ((index.indexOf(' ') > -1)) {
+                    throw new Error('Column names should not have spaces in them')
                 }
-                if ((col.indexOf(' ') > -1)) {
-                    throw new Error('Column names should not have a space')
-                }
-            }
+            })
             alpha_record = await DriverInterface.getDriver(AlphaORM.DRIVER).store(alpha_record)
         } catch (e) {
             throw e

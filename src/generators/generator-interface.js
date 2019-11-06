@@ -1,11 +1,15 @@
 class GeneratorInterface {
 
-    checkColumnUpdates(columns_db, columns_record, alpha_record) {
-        throw new Error('`checkColumnUpdates` is not yet implemented')
+    static checkColumnUpdates(columns_db, columns_record, alpha_record) {
+        throw new Error("This generator does not  support the 'checkColumnUpdates' function")
     }
 
-    creatNewColumns(map, alpha_record) {
-        throw new Error('`creatNewColumns` is not yet implemented')
+    static creatNewColumns(map, alpha_record, tablename) {
+        throw new Error("This generator does not  support the 'creatNewColumns' function")
+    }
+
+    static columns(columns_db, alpha_record, base = true) {
+        throw new Error("This generator does not  support the 'columns' function")
     }
 
     static getGenerator(driver) {
