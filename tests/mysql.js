@@ -11,20 +11,20 @@ AlphaORM.setup('mysql', {
 /**
  * creating
  */
-async function test_1() {
+async function creating() {
     product = await AlphaORM.create('shop_product')
     product.name = "Running Shoes"
     product.price = 1000
     product.stock = 50
     await AlphaORM.store(product)
 }
-// test_1()
+// creating()
 
 
 /**
  * creating [foreign key]
  */
-async function test_2() {
+async function creating_2() {
     user = await AlphaORM.create('user')
     user.firstname = "Claret"
     user.lastname = "Nnamocha"
@@ -37,55 +37,55 @@ async function test_2() {
 
     await AlphaORM.store(student)
 }
-// test_2()
+// creating_2()
 
 
 /**
  * reading [one] (filter)
  */
-async function test_3() {
+async function reading() {
     product = await AlphaORM.find('shop_product', 'id = :id', { id: 3 })
     console.log(product)
 }
-// test_3()
+// reading()
 
 
 /**
  * reading [all]
  */
-async function test_4() {
+async function reading_2() {
     products = await AlphaORM.getAll('shop_product')
     console.log(products)
 }
-// test_4()
+// reading_2()
 
 
 /**
  * reading [all] (filter)
  */
-async function test_5() {
+async function reading_3() {
     products = await AlphaORM.findAll('shop_product', 'id > 0')
     console.log(products)
 }
-// test_5()
+// reading_3()
 
 
 /**
  * update
  */
-async function test_6() {
+async function update() {
     product = await AlphaORM.find('shop_product', 'id = :id', { id: 3 })
     product.price = 500
     await AlphaORM.store(product)
 }
-// test_6()
+// update()
 
 
 /**
  * delete
  */
-async function test_7() {
+async function del() {
     product = await AlphaORM.find('shop_product', 'id = :id', { id: 2 })
     await AlphaORM.drop(product)
 }
-// test_7()
+// del()
