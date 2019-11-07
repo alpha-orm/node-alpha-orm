@@ -3,7 +3,6 @@ const { MySQLQueryBuilder } = require('../query-builders/mysql-query-builder')
 const { array_difference, get_type, is_object_empty } = require('../utilities')
 const { AlphaRecord } = require('../alpha-record')
 const { AlphaORM } = require('../alpha-orm')
-const { MySQLDriver } = require('../drivers/mysql-driver')
 
 class MySQLGenerator extends GeneratorInterface {
 

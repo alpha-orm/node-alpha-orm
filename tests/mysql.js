@@ -18,7 +18,7 @@ async function creating() {
     product.stock = 50
     await AlphaORM.store(product)
 }
-creating()
+// creating()
 
 
 /**
@@ -74,9 +74,12 @@ async function reading_3() {
  * update
  */
 async function update() {
-    product = await AlphaORM.find('shop_product', 'id = :id', { id: 3 })
+    product = await AlphaORM.find('shop_product', 'id = :id', { id: 1 })
     product.price = 500
     await AlphaORM.store(product)
+    product.price = 5000
+    await AlphaORM.store(product)
+    console.log(product)
 }
 // update()
 
@@ -85,7 +88,7 @@ async function update() {
  * delete
  */
 async function del() {
-    product = await AlphaORM.find('shop_product', 'id = :id', { id: 2 })
+    product = await AlphaORM.find('shop_product', 'id = :id', { id: 1 })
     await AlphaORM.drop(product)
 }
 // del()

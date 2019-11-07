@@ -65,14 +65,21 @@ class MySQLDriver extends DriverInterface {
     static async updateRecord(alpha_record) {
         let id = alpha_record._id
         let tablename = alpha_record._tablename
-        delete alpha_record.id
+
+        Object.defineProperty(alpha_record, '_id', { writable: true });
+        Object.defineProperty(alpha_record, '_tablename', { writable: true });
+
+        delete alpha_record._id
         delete alpha_record._tablename
+
         let update = await this.query(MySQLQueryBuilder.updateRecord(tablename, alpha_record, id))
-        alpha_record.id = id
+
+        alpha_record._id = id
         alpha_record._tablename = tablename
-        Object.defineProperty(alpha_record, '_tablename', {
-            writable: false
-        });
+
+        Object.defineProperty(alpha_record, '_tablename', { writable: false });
+        Object.defineProperty(alpha_record, '_id', { writable: false });
+
         return alpha_record
     }
 
