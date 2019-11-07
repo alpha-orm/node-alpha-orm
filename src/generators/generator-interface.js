@@ -18,6 +18,10 @@ class GeneratorInterface {
                 const { MySQLGenerator } = require('./mysql-generator')
                 return MySQLGenerator
                 break;
+            case 'sqlite':
+                const { SQLiteGenerator } = require('./sqlite-generator')
+                return SQLiteGenerator
+                break;
             default:
                 throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
                 break;
