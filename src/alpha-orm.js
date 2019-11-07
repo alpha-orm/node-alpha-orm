@@ -40,6 +40,7 @@ class AlphaORM {
     }
 
     static async drop(alpha_record) {
+        if ((alpha_record instanceof AlphaRecord) == false) { throw new Error('Parameter passed into method `drop` must be of type `AlphaRecord`') }
         await DriverInterface.getDriver(AlphaORM.DRIVER).drop(alpha_record)
     }
 
