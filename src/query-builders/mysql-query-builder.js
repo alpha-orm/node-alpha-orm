@@ -40,10 +40,12 @@ class MySQLQueryBuilder {
         let sql = `INSERT INTO \`${tablename}\` (`
         let columns = Object.keys(map)
         for (let column of columns) {
+            if (column == '_tablename') { continue }
             sql += `\`${column}\``
             sql += column == columns[columns.length - 1] ? `) VALUES (` : ','
         }
         for (let column of columns) {
+            if (column == '_tablename') { continue }
             let colVal = map[column]
             if (typeof colVal === 'boolean') {
                 colVal = true ? 1 : 0;

@@ -58,6 +58,10 @@ class DriverInterface {
                 const { MySQLDriver } = require('./mysql-driver')
                 return MySQLDriver
                 break;
+            case 'sqlite':
+                const { SQLiteDriver } = require('./sqlite-driver')
+                return SQLiteDriver
+                break;
             default:
                 throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
                 break;

@@ -124,6 +124,13 @@ class MySQLDriver extends DriverInterface {
                 await this.createColumns(tablename, new_columns)
             }
             alpha_record.id = await this.insertRecord(tablename, alpha_record)
+            alpha_record._id = alpha_record.id
+            Object.defineProperty(alpha_record, '_id', {
+                writable: false
+            });
+            Object.defineProperty(alpha_record, 'id', {
+                writable: false
+            });
             return alpha_record
         } catch (e) {
             throw e

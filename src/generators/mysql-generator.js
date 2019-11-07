@@ -36,7 +36,10 @@ class MySQLGenerator extends GeneratorInterface {
 
     static creatNewColumns(map, alpha_record, tablename) {
         let new_columns = {}
-        map.forEach(col => {
+        for (let col of Object.values(map)) {
+            if (col == '_tablename') {
+                continue
+            }
             if (col instanceof AlphaRecord) {
                 this.columns(col._tablename, col)
             } else if (!AlphaORM.DATA_TYPES.includes(typeof(col))) {
@@ -48,7 +51,7 @@ class MySQLGenerator extends GeneratorInterface {
                     new_columns[col] = MySQLQueryBuilder.DATA_TYPE[get_type(alpha_record[col])]
                 }
             }
-        })
+        }
         return new_columns
     }
 
