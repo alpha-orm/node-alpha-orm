@@ -113,7 +113,9 @@ class SQLiteDriver extends DriverInterface {
         return await AlphaRecord.create(tablename, rows)
     }
 
-    static async store(alpha_record, base = true) {
+    static async store(alpha_record, base = true) {        
+        Object.defineProperty(alpha_record, '_id', { configurable: true, writable: true })
+        Object.defineProperty(alpha_record, 'id', { configurable: true, writable: true })
         try {
             for (let a of Object.keys(alpha_record)) {
                 if (alpha_record[a] instanceof AlphaRecord) {
@@ -138,10 +140,14 @@ class SQLiteDriver extends DriverInterface {
                         alpha_record[col] = await this.store(alpha_record[col])
                     }
                 }
+                Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
+                Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })
                 return await this.updateRecord(alpha_record)
             }
             alpha_record.id = await this.insertRecord(tablename, alpha_record)
-            alpha_record._id = alpha_record.id
+            alpha_record._id = alpha_record.id        
+            Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
+            Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })
             return alpha_record
         } catch (e) {
             throw e

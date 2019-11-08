@@ -34,7 +34,7 @@ async function creating_2() {
  * reading [one] (filter)
  */
 async function reading() {
-    product = await AlphaORM.find('shop_product', 'id = :id', { id: 3 })
+    product = await AlphaORM.find('shop_product', 'id = :id', { id: 1 })
     console.log(product)
 }
 
