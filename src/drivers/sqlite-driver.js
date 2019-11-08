@@ -63,22 +63,21 @@ class SQLiteDriver extends DriverInterface {
     }
 
     static async updateRecord(alpha_record) {
+        for (let col of Object.keys(alpha_record)) {
+            if (alpha_record[col] instanceof AlphaRecord) {
+                alpha_record[col] = await this.updateRecord(alpha_record[col])
+                delete alpha_record[col]
+            }
+        }
         let id = alpha_record._id
         let tablename = alpha_record._tablename
 
-        Object.defineProperty(alpha_record, '_id', { writable: true });
-        Object.defineProperty(alpha_record, '_tablename', { writable: true });
-
         delete alpha_record._id
         delete alpha_record._tablename
-
         let update = await this.query(SQLiteQueryBuilder.updateRecord(tablename, alpha_record, id))
 
         alpha_record._id = id
         alpha_record._tablename = tablename
-
-        Object.defineProperty(alpha_record, '_tablename', { writable: false });
-        Object.defineProperty(alpha_record, '_id', { writable: false });
 
         return alpha_record
     }
@@ -93,7 +92,8 @@ class SQLiteDriver extends DriverInterface {
 
     static async createColumns(tablename, new_columns, present_columns) {
         for (let column of Object.keys(new_columns)) {
-            if (present_columns.includes(column)) { continue }
+            if (present_columns.includes(column)) { continue }                            
+            if (column == '_id' | column == '_tablename') { continue }
             let c = {}
             c[column] = new_columns[column]
             await this.query(SQLiteQueryBuilder.createColumns(tablename, c))
@@ -115,9 +115,6 @@ class SQLiteDriver extends DriverInterface {
 
     static async store(alpha_record, base = true) {
         try {
-            if (alpha_record._id) {
-                return this.updateRecord(alpha_record)
-            }
             for (let a of Object.keys(alpha_record)) {
                 if (alpha_record[a] instanceof AlphaRecord) {
                     alpha_record[a] = await this.store(alpha_record[a], false)
@@ -134,15 +131,17 @@ class SQLiteDriver extends DriverInterface {
             }
             if (!is_object_empty(new_columns)) {
                 await this.createColumns(tablename, new_columns, present_columns)
+            }              
+            if (alpha_record._id) {
+                for (let col of Object.keys(alpha_record)) {
+                    if (alpha_record[col] instanceof AlphaRecord) {
+                        alpha_record[col] = await this.store(alpha_record[col])
+                    }
+                }
+                return await this.updateRecord(alpha_record)
             }
             alpha_record.id = await this.insertRecord(tablename, alpha_record)
             alpha_record._id = alpha_record.id
-            Object.defineProperty(alpha_record, '_id', {
-                writable: false
-            });
-            Object.defineProperty(alpha_record, 'id', {
-                writable: false
-            });
             return alpha_record
         } catch (e) {
             throw e
