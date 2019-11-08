@@ -63,22 +63,21 @@ class MySQLDriver extends DriverInterface {
     }
 
     static async updateRecord(alpha_record) {
+        for (let col of Object.keys(alpha_record)) {
+            if (alpha_record[col] instanceof AlphaRecord) {
+                alpha_record[col] = await this.updateRecord(alpha_record[col])
+                delete alpha_record[col]
+            }
+        }
         let id = alpha_record._id
         let tablename = alpha_record._tablename
 
-        Object.defineProperty(alpha_record, '_id', { writable: true });
-        Object.defineProperty(alpha_record, '_tablename', { writable: true });
-
         delete alpha_record._id
         delete alpha_record._tablename
-
         let update = await this.query(MySQLQueryBuilder.updateRecord(tablename, alpha_record, id))
 
         alpha_record._id = id
         alpha_record._tablename = tablename
-
-        Object.defineProperty(alpha_record, '_tablename', { writable: false });
-        Object.defineProperty(alpha_record, '_id', { writable: false });
 
         return alpha_record
     }
@@ -109,10 +108,9 @@ class MySQLDriver extends DriverInterface {
     }
 
     static async store(alpha_record, base = true) {
+        Object.defineProperty(alpha_record, '_id', { configurable: true, writable: true })
+        Object.defineProperty(alpha_record, 'id', { configurable: true, writable: true })
         try {
-            if (alpha_record._id) {
-                return this.updateRecord(alpha_record)
-            }
             for (let a of Object.keys(alpha_record)) {
                 if (alpha_record[a] instanceof AlphaRecord) {
                     alpha_record[a] = await this.store(alpha_record[a], false)
@@ -129,15 +127,21 @@ class MySQLDriver extends DriverInterface {
             }
             if (!is_object_empty(new_columns)) {
                 await this.createColumns(tablename, new_columns)
+            }            
+            if (alpha_record._id) {
+                for (let col of Object.keys(alpha_record)) {
+                    if (alpha_record[col] instanceof AlphaRecord) {
+                        alpha_record[col] = await this.store(alpha_record[col])
+                    }
+                }
+                Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
+                Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })
+                return await this.updateRecord(alpha_record)
             }
             alpha_record.id = await this.insertRecord(tablename, alpha_record)
-            alpha_record._id = alpha_record.id
-            Object.defineProperty(alpha_record, '_id', {
-                writable: false
-            });
-            Object.defineProperty(alpha_record, 'id', {
-                writable: false
-            });
+            alpha_record._id = alpha_record.id            
+            Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
+            Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })
             return alpha_record
         } catch (e) {
             throw e

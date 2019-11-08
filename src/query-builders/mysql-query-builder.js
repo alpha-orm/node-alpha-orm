@@ -12,6 +12,7 @@ class MySQLQueryBuilder {
         let sql = `ALTER TABLE \`${tablename}\` `
         let columns = Object.keys(map)
         for (let column of columns) {
+            if (column == '_id' | column == '_tablename') { continue }
             sql += `ADD COLUMN IF NOT EXISTS \`${column}\` ${map[column]}`
             sql += column == columns[columns.length - 1] ? `;` : ','
         }
@@ -66,6 +67,7 @@ class MySQLQueryBuilder {
             }
             colVal = JSON.stringify(colVal)
             sql += column == columns[0] ? `SET ` : ``
+            if (column == '_id' | column == '_tablename' | column == 'id') {continue}
             sql += `\`${column}\` = ${colVal}`
             sql += column == columns[columns.length - 1] ? ` WHERE \`id\` = ${id};` : ', '
         }
