@@ -42,7 +42,7 @@ class MySQLDriver extends DriverInterface {
 
     static async getAll(tablename) {
         let rows = await this.query(MySQLQueryBuilder.getAllRecords(tablename))
-        return AlphaRecord.create(tablename, rows)
+        return await AlphaRecord.create(tablename, rows)
     }
 
     static async insertRecord(tablename, alpha_record) {
@@ -99,12 +99,12 @@ class MySQLDriver extends DriverInterface {
         if (row.length == 0) {
             throw new Error('No record found for corresponding query')
         }
-        return AlphaRecord.create(tablename, row, true)
+        return await AlphaRecord.create(tablename, row, true)
     }
 
     static async findAll(tablename, where, map) {
         let rows = await this.query(MySQLQueryBuilder.find(false, tablename, where, map))
-        return AlphaRecord.create(tablename, rows)
+        return await AlphaRecord.create(tablename, rows)
     }
 
     static async store(alpha_record, base = true) {

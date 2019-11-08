@@ -42,7 +42,7 @@ class SQLiteDriver extends DriverInterface {
 
     static async getAll(tablename) {
         let rows = await this.query(SQLiteQueryBuilder.getAllRecords(tablename), true)
-        return AlphaRecord.create(tablename, rows)
+        return await AlphaRecord.create(tablename, rows)
     }
 
     static async insertRecord(tablename, alpha_record) {
@@ -105,12 +105,12 @@ class SQLiteDriver extends DriverInterface {
         if (row.length == 0) {
             throw new Error('No record found for corresponding query')
         }
-        return AlphaRecord.create(tablename, row, true)
+        return await AlphaRecord.create(tablename, row, true)
     }
 
     static async findAll(tablename, where, map) {
         let rows = await this.query(SQLiteQueryBuilder.find(false, tablename, where, map), true)
-        return AlphaRecord.create(tablename, rows)
+        return await AlphaRecord.create(tablename, rows)
     }
 
     static async store(alpha_record, base = true) {
