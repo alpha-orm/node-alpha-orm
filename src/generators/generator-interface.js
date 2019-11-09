@@ -13,6 +13,7 @@ class GeneratorInterface {
     }
 
     static getGenerator(driver) {
+        driver = driver.toLocaleLowerCase()
         switch (driver) {
             case 'mysql':
                 const { MySQLGenerator } = require('./mysql-generator')
@@ -22,8 +23,12 @@ class GeneratorInterface {
                 const { SQLiteGenerator } = require('./sqlite-generator')
                 return SQLiteGenerator
                 break;
+            case 'pgsql':
+                const { PostgreSQLGenerator } = require('./postgresql-generator')
+                return PostgreSQLGenerator
+                break;
             default:
-                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
+                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql, sqlite and pgsql`)
                 break;
         }
     }

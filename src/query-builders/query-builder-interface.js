@@ -37,6 +37,7 @@ class QueryBuilderInterface {
     }
 
     static getQueryBuilder(driver) {
+        driver = driver.toLocaleLowerCase()
         switch (driver) {
             case 'mysql':
                 const { MySQLQueryBuilder } = require('./mysql-query-builder')
@@ -46,8 +47,12 @@ class QueryBuilderInterface {
                 const { SQLiteQueryBuilder } = require('./sqlite-query-builder')
                 return SQLiteQueryBuilder
                 break;
+            case 'pgsql':
+                const { PostgreSQLQueryBuilder } = require('./postgresql-query-builder')
+                return PostgreSQLQueryBuilder
+                break;
             default:
-                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
+                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql, sqlite and pgsql`)
                 break;
         }
     }

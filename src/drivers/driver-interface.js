@@ -62,8 +62,12 @@ class DriverInterface {
                 const { SQLiteDriver } = require('./sqlite-driver')
                 return SQLiteDriver
                 break;
+            case 'pgsql':
+                const { PostgreSQLDriver } = require('./postgresql-driver')
+                return PostgreSQLDriver
+                break;
             default:
-                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
+                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql, sqlite and pgsql`)
                 break;
         }
     }
