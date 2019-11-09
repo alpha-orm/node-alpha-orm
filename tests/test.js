@@ -1,6 +1,16 @@
 const { AlphaORM } = require('../index')
 
 /**
+* Implemented for:
+* -mysql [completed]
+* -sqlite [completed]
+* -postgres [incomplete]
+* -mongodb [undone]
+* -sqlserver [undone]
+*/
+
+
+/**
  * creating
  */
 async function creating() {
