@@ -32,6 +32,7 @@ class AlphaRecord {
         switch (driver) {
             case 'mysql':
             case 'sqlite':
+            case 'pgsql':
                 return await AlphaORM.find(tablename, 'id = :id', { id })
                 break;
             default:

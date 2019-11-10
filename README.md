@@ -4,7 +4,7 @@ An extraordinary javascript database orm
 ## Features
 * Automatically creates tables and columns.
 * No configuration required, simply create database.
-* Currently supported databases include mysql and sqlite.
+* Currently supported databases include mysql, sqlite and postgresql.
 
 
 ## Examples
@@ -26,6 +26,18 @@ AlphaORM.setup('mysql',{
 const { AlphaORM  } = require('alpha-orm')
 
 AlphaORM.setup('sqlite',{
+  database : 'alphaorm'
+})
+```
+
+### Setup (PostgreSQL)
+```javascript
+const { AlphaORM  } = require('alpha-orm')
+
+AlphaORM.setup('pgsql',{
+  host     : 'localhost',
+  user     : 'postgres',
+  password : 'postgres',
   database : 'alphaorm'
 })
 ```

@@ -4,7 +4,7 @@ const { AlphaORM } = require('../index')
 * Implemented for:
 * -mysql [completed]
 * -sqlite [completed]
-* -postgres [incomplete]
+* -postgres [completed]
 * -mongodb [undone]
 * -sqlserver [undone]
 */
