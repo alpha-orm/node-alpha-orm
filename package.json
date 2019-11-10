@@ -14,7 +14,10 @@
     "orm",
     "database",
     "db",
-    "alpha-orm"
+    "alpha-orm",
+    "mysql",
+    "sqlite",
+    "postgresql"
   ],
   "author": "Claret Nnamocha <devclareo@gmail.com>",
   "license": "MIT",
