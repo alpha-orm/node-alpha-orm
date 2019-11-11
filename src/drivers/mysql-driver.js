@@ -11,7 +11,6 @@ class MySQLDriver extends DriverInterface {
 
     static get CONNECTION() { return this._connection ? this._connection : '' }
     static set CONNECTION(val) { this._connection = val }
-    static setDriver(connection) { this.CONNECTION = connection }
 
     static async connect() {
         try {
