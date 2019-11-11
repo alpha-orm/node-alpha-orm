@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/claretnnamocha/alpha-orm.git"
+    "url": "git+https://github.com/alpha-orm/node-alpha-orm.git"
   },
   "keywords": [
     "orm",
@@ -22,9 +22,9 @@
   "author": "Claret Nnamocha <devclareo@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/claretnnamocha/alpha-orm/issues"
+    "url": "https://github.com/alpha-orm/node-alpha-orm/issues"
   },
-  "homepage": "https://github.com/claretnnamocha/alpha-orm#readme",
+  "homepage": "https://github.com/alpha-orm/node-alpha-orm#readme",
   "dependencies": {
     "bluebird": "^3.7.1",
     "mysql": "^2.17.1",
