@@ -7,6 +7,8 @@ const { array_difference, get_type, is_object_empty } = require('./utilities')
 
 class AlphaORM {
 
+    static get DATA_TYPES() { return ['number', 'string', 'boolean'] }
+    
     static get DRIVER() { return this._driver ? this._driver : '' }
     static set DRIVER(val) { this._driver = val }
     static setDriver(driver) { AlphaORM.DRIVER = driver }
