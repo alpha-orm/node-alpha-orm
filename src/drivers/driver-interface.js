@@ -51,6 +51,10 @@ class DriverInterface {
         throw new Error("This driver does not  support the 'drop' function")
     }
 
+    static dropAll(tablename) {
+        throw new Error("This driver does not  support the 'dropAll' function")
+    }
+
     static getDriver(driver) {
         driver = driver.toLocaleLowerCase()
         switch (driver) {

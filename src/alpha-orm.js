@@ -8,7 +8,7 @@ const { array_difference, get_type, is_object_empty } = require('./utilities')
 class AlphaORM {
 
     static get DATA_TYPES() { return ['number', 'string', 'boolean'] }
-    
+
     static get DRIVER() { return this._driver ? this._driver : '' }
     static set DRIVER(val) { this._driver = val }
     static setDriver(driver) { AlphaORM.DRIVER = driver }
@@ -47,6 +47,10 @@ class AlphaORM {
     static async create(table_name) {
         let c = await DriverInterface.getDriver(AlphaORM.DRIVER).createTable(table_name)
         return new AlphaRecord(table_name)
+    }
+
+    static async dropAll(table_name) {
+        await DriverInterface.getDriver(AlphaORM.DRIVER).dropAll(table_name)
     }
 
     static async getAll(table_name) {

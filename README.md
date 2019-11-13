@@ -112,3 +112,10 @@ await AlphaORM.store(product)
 product = await AlphaORM.find('shop_product','id = :id', { id : 2 })
 await AlphaORM.drop(product)
 ```
+### Delete Everything
+```javascript
+/**
+* delete [all]
+*/
+await AlphaORM.dropAll('shop_product')
+```

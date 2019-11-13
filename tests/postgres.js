@@ -15,3 +15,4 @@ AlphaORM.setup('pgsql', {
 // reading_3()
 // update()
 // del()
+// del_2()

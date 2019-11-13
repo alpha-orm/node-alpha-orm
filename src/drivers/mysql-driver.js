@@ -126,7 +126,7 @@ class MySQLDriver extends DriverInterface {
             }
             if (!is_object_empty(new_columns)) {
                 await this.createColumns(tablename, new_columns)
-            }            
+            }
             if (alpha_record._id) {
                 for (let col of Object.keys(alpha_record)) {
                     if (alpha_record[col] instanceof AlphaRecord) {
@@ -138,7 +138,7 @@ class MySQLDriver extends DriverInterface {
                 return await this.updateRecord(alpha_record)
             }
             alpha_record.id = await this.insertRecord(tablename, alpha_record)
-            alpha_record._id = alpha_record.id            
+            alpha_record._id = alpha_record.id
             Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
             Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })
             return alpha_record
@@ -158,6 +158,11 @@ class MySQLDriver extends DriverInterface {
         } catch (e) {
             throw e
         }
+    }
+
+    static async dropAll(tablename) {
+        console.log(MySQLQueryBuilder.dropAll(tablename))
+        return await this.query(MySQLQueryBuilder.dropAll(tablename))
     }
 
 }

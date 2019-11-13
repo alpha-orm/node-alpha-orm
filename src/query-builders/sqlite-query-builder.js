@@ -66,7 +66,7 @@ class SQLiteQueryBuilder {
             }
             colVal = JSON.stringify(colVal)
             sql += column == columns[0] ? `SET ` : ``
-            if (column == '_id' | column == '_tablename' | column == 'id') {continue}
+            if (column == '_id' | column == '_tablename' | column == 'id') { continue }
             sql += `\`${column}\` = ${colVal}`
             sql += column == columns[columns.length - 1] ? ` WHERE \`id\` = ${id};` : ', '
         }
@@ -105,6 +105,10 @@ class SQLiteQueryBuilder {
         sql += where
         sql += single ? ' LIMIT 1;' : ';'
         return sql
+    }
+
+    static dropAll(tablename) {
+        return `DROP FROM \`${tablename}\``
     }
 
 }

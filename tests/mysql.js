@@ -1,5 +1,5 @@
 const { AlphaORM } = require('../index')
-const { creating, creating_2, reading, reading_2, reading_3, update, del } = require('./test')
+const { creating, creating_2, reading, reading_2, reading_3, update, del, del_2 } = require('./test')
 
 AlphaORM.setup('mysql', {
     host: 'localhost',
@@ -15,3 +15,4 @@ AlphaORM.setup('mysql', {
 // reading_3()
 // update()
 // del()
+// del_2()

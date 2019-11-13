@@ -10,7 +10,7 @@ class PostgreSQLDriver extends DriverInterface {
 
     static get CONNECTION() { return this._connection ? this._connection : '' }
     static set CONNECTION(val) { this._connection = val }
-    
+
     static async connect() {
         try {
             let options = AlphaORM.OPTIONS
@@ -129,7 +129,7 @@ class PostgreSQLDriver extends DriverInterface {
             delete new_columns['_id']
             if (!is_object_empty(new_columns)) {
                 await this.createColumns(tablename, new_columns)
-            }            
+            }
             if (alpha_record._id) {
                 for (let col of Object.keys(alpha_record)) {
                     if (alpha_record[col] instanceof AlphaRecord) {
@@ -141,7 +141,7 @@ class PostgreSQLDriver extends DriverInterface {
                 return await this.updateRecord(alpha_record)
             }
             alpha_record.id = await this.insertRecord(tablename, alpha_record)
-            alpha_record._id = alpha_record.id            
+            alpha_record._id = alpha_record.id
             Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
             Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })
             return alpha_record
@@ -161,6 +161,10 @@ class PostgreSQLDriver extends DriverInterface {
         } catch (e) {
             throw e
         }
+    }
+
+    static async dropAll(tablename) {
+        return await this.query(PostgreSQLQueryBuilder.dropAll(tablename))
     }
 
 }

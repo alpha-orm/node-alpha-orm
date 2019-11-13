@@ -87,4 +87,12 @@ async function del() {
 }
 
 
-module.exports = { creating, creating_2, reading, reading_2, reading_3, update, del }
+/**
+ * delete_2
+ */
+async function del_2() {
+    await AlphaORM.dropAll('shop_product')
+}
+
+
+module.exports = { creating, creating_2, reading, reading_2, reading_3, update, del, del_2 }

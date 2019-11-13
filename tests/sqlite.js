@@ -12,3 +12,4 @@ AlphaORM.setup('sqlite', {
 // reading_3()
 // update()
 // del()
+// del_2()

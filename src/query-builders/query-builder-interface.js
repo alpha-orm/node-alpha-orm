@@ -36,6 +36,10 @@ class QueryBuilderInterface {
         throw new Error("This builder does not  support the 'find' function")
     }
 
+    static dropAll(tablename) {
+        throw new Error("This builder does not  support the 'dropAll' function")
+    }
+
     static getQueryBuilder(driver) {
         driver = driver.toLocaleLowerCase()
         switch (driver) {

@@ -56,7 +56,7 @@ class PostgreSQLQueryBuilder {
             if (typeof colVal === 'boolean') {
                 colVal = true ? 1 : 0;
             }
-            sql += JSON.stringify(colVal).replace(/"/g,"'")
+            sql += JSON.stringify(colVal).replace(/"/g, "'")
             sql += column == columns[columns.length - 1] ? `); SELECT currval('${tablename}_id_seq');` : ','
         }
         return sql
@@ -70,9 +70,9 @@ class PostgreSQLQueryBuilder {
             if (typeof colVal === 'boolean') {
                 colVal = true ? 1 : 0;
             }
-            colVal = JSON.stringify(colVal).replace(/"/g,"'")
+            colVal = JSON.stringify(colVal).replace(/"/g, "'")
             sql += column == columns[0] ? `SET ` : ``
-            if (column == '_id' | column == '_tablename' | column == 'id') {continue}
+            if (column == '_id' | column == '_tablename' | column == 'id') { continue }
             sql += `${column} = ${colVal}`
             sql += column == columns[columns.length - 1] ? ` WHERE id = ${id};` : ', '
         }
@@ -113,6 +113,9 @@ class PostgreSQLQueryBuilder {
         return sql
     }
 
+    static dropAll(tablename) {
+        return `DROP FROM \`${tablename}\``
+    }
 }
 
 module.exports = { PostgreSQLQueryBuilder }
