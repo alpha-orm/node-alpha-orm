@@ -21,6 +21,11 @@ class AlphaORM {
 
     static setup(driver, options) {
         this.setDriver(driver)
+        for (let option of DriverInterface.getDriver(AlphaORM.DRIVER).REQUIRED_FIELDS) {
+            if (options[option] === undefined) {
+                throw new Error(`The '${option}' option is required!`)
+            }
+        }
         this.setOptions(options)
     }
 

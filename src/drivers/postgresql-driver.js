@@ -8,6 +8,7 @@ const { array_difference, get_type, is_object_empty } = require('../utilities')
 
 class PostgreSQLDriver extends DriverInterface {
 
+    static get REQUIRED_FIELDS() { return [ 'host', 'database', 'user', 'password' ] }
     static get CONNECTION() { return this._connection ? this._connection : '' }
     static set CONNECTION(val) { this._connection = val }
 
