@@ -30,6 +30,9 @@ class AlphaORM {
     }
 
     static async store(alpha_record) {
+        if (Object.keys(alpha_record).length == 0) {
+            return
+        }
         try {
             if ((alpha_record instanceof AlphaRecord) == false) { throw new Error('Parameter passed into method `store` must be of type `AlphaRecord`') }
 

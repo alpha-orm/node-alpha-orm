@@ -14,7 +14,10 @@ class MySQLQueryBuilder {
         for (let column of columns) {
             if (column == '_id' | column == '_tablename') { continue }
             sql += `ADD COLUMN IF NOT EXISTS \`${column}\` ${map[column]}`
-            sql += column == columns[columns.length - 1] ? `;` : ','
+            sql += column == columns[columns.length - 1] ? `;` : ', '
+        }
+        if (sql.endsWith(', ')) {
+            return sql.slice(0, -2)
         }
         return sql
     }
