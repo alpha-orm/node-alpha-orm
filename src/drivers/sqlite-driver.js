@@ -137,7 +137,9 @@ class SQLiteDriver extends DriverInterface {
                 for (let col of Object.keys(alpha_record)) {
                     if (alpha_record[col] instanceof AlphaRecord) {
                         alpha_record[col] = await this.store(alpha_record[col])
+                        return await this.updateRecord(alpha_record)
                     }
+                    return await this.updateRecord(alpha_record)
                 }
                 Object.defineProperty(alpha_record, 'id', { configurable: true, writable: false })
                 Object.defineProperty(alpha_record, '_id', { configurable: true, writable: false })

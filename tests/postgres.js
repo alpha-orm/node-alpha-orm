@@ -1,5 +1,5 @@
 const { AlphaORM } = require('../index')
-const { creating, creating_2, reading, reading_2, reading_3, update, del } = require('./test')
+const { create, create_2, read, read_2, read_3, update, del, del_2 } = require('./test')
 
 AlphaORM.setup('pgsql', {
     host: 'localhost',
@@ -8,11 +8,11 @@ AlphaORM.setup('pgsql', {
     database: 'alphaorm'
 })
 
-// creating()
-// creating_2()
-// reading()
-// reading_2()
-// reading_3()
+// create()
+// create_2()
+// read()
+// read_2()
+// read_3()
 // update()
 // del()
 // del_2()

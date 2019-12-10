@@ -1,7 +1,5 @@
-const { AlphaORM } = require('../index')
-const { creating, creating_2, reading, reading_2, reading_3, update, del, del_2 } = require('./test')
-
-const DB = AlphaORM
+const { AlphaORM: DB } = require('../index')
+const { create, create_2, read, read_2, read_3, update, del, del_2 } = require('./test')
 
 DB.setup('mysql', {
     host: 'localhost',
@@ -10,23 +8,11 @@ DB.setup('mysql', {
     database: 'alphaorm'
 })
 
-
-
-// creating()
-// creating_2()
-// reading()
-// reading_2()
-// reading_3()
+// create()
+// create_2()
+read()
+// read_2()
+// read_3()
 // update()
 // del()
 // del_2()
-
-
-async function d() {
-	student = await DB.find('student','id = 1')
-	console.log(student)
-	student.user.hehe = 'Alpha'
-	console.log(student)
-	DB.store(student)
-}
-d()

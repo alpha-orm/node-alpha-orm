@@ -11,9 +11,9 @@ An extraordinary javascript database orm
 #
 ### Setup (MySQL)
 ```javascript
-const { AlphaORM  } = require('alpha-orm')
+const { AlphaORM: DB  } = require('alpha-orm')
 
-AlphaORM.setup('mysql',{
+DB.setup('mysql',{
   host     : 'localhost',
   user     : 'root',
   password : '',
@@ -23,18 +23,18 @@ AlphaORM.setup('mysql',{
 
 ### Setup (SQLite)
 ```javascript
-const { AlphaORM  } = require('alpha-orm')
+const { AlphaORM: DB  } = require('alpha-orm')
 
-AlphaORM.setup('sqlite',{
+DB.setup('sqlite',{
   database : 'alphaorm'
 })
 ```
 
 ### Setup (PostgreSQL)
 ```javascript
-const { AlphaORM  } = require('alpha-orm')
+const { AlphaORM: DB  } = require('alpha-orm')
 
-AlphaORM.setup('pgsql',{
+DB.setup('pgsql',{
   host     : 'localhost',
   user     : 'postgres',
   password : 'postgres',
@@ -43,79 +43,93 @@ AlphaORM.setup('pgsql',{
 ```
 #
 #
-### Creating
+### CREATE
 ```javascript
-/**
-* creating
-*/
-product = await AlphaORM.create('shop_product')
-product.name = "Running Shoes" 
-product.price = 1000
-product.stock = 50
-await AlphaORM.store(product)
+//--------------------------------------
+//	CREATE 1
+//--------------------------------------
+product = await DB.create('product')
+product.name = 'Running shoes'
+product.price = 5000
+await DB.store(product)
 
 
-/**
-* creating [foreign key]
-*/
-user = await AlphaORM.create('user')
-user.firstname = "Claret"
-user.lastname = "Nnamocha"
-user.age = 21
-user.birthday = '8-October-1998'
 
-student = await AlphaORM.create('student')
-student.matno = "15/31525"
-student.user = user
 
-await AlphaORM.store(student)
+//--------------------------------------
+//	CREATE 2
+//--------------------------------------
+author = await DB.create('author')
+author.name = 'Chimamanda Adichie'
+
+book = await DB.create('book')
+book.title = 'Purple Hibiscus'
+book.author = author
+await DB.store(book)
 ```
 #
-### Reading
+### READ
 ```javascript
-/**
-* reading [one] (filter)
-*/
-product = await AlphaORM.find('shop_product','id = :id',{ id : 3 })
-console.log(product)
-
-/**
-* reading [all]
-*/
-products = await AlphaORM.getAll('shop_product')
-console.log(products)
+//--------------------------------------
+//	READ 1 [get all records]
+//--------------------------------------
+books = await DB.getAll('book')
+for book in books:
+	console.log(`${book.title} by ${book.author.name}`)
 
 
-/**
-* reading [all] (filter)
-*/
-products = await AlphaORM.findAll('shop_product','id > 0')
-console.log(products)
+
+
+//--------------------------------------
+//	READ 2 [filter one]
+//--------------------------------------
+book = await DB.find('book','id = :bid', { 'bid' : 1 })
+console.log(`${book.title} by ${book.author.name}`)
+
+
+
+
+//--------------------------------------
+//	READ 3 [filter all]
+//--------------------------------------
+author = await DB.find('author','name = :authorName',{ 'authorName': 'William Shakespare' })
+booksByShakespare = await DB.findAll('book', 'author_id = :authorId', { 'authorId': author.getID() })
+console.log('Books by William Shakespare are :')
+for book in booksByShakespare:
+	console.log(book.title)
 ```
 #
-### Updating
+### UPDATE
 
 ```javascript
-/**
-* update
-*/
-product = await AlphaORM.find('shop_product','id = :id', { id : 3 })
+
+//--------------------------------------
+//	UPDATE
+//--------------------------------------
+product = await DB.find('product', 'id = :pid', { 'pid': 1 })
 product.price = 500
-await AlphaORM.store(product)
+
+book = await DB.find('book','id = :bid', { 'bid' : 1 })
+book.author.name = 'New author'
+book.isbn = '3847302-SD'
+book.title = 'New Title'
+await DB.store(book)
+console.log(book)
 ```
 #
-### Delete
+### DELETE
 ```javascript
-/**
-* delete
-*/
-product = await AlphaORM.find('shop_product','id = :id', { id : 2 })
-await AlphaORM.drop(product)
-```
-### Delete Everything
-```javascript
-/**
-* delete [all]
-*/
-await AlphaORM.dropAll('shop_product')
+//--------------------------------------
+//	DELETE 1 [delete single record]
+//--------------------------------------
+book = await DB.find('book','id = :bid', { 'bid' : 1 })
+await DB.drop(book)
+
+
+
+
+//--------------------------------------
+//	DELETE 2 [delete all records]
+//--------------------------------------
+await DB.dropAll('book')
 ```

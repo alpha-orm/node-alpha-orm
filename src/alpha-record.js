@@ -5,6 +5,10 @@ class AlphaRecord {
         Object.defineProperty(this, '_tablename', { configurable: true, writable: false })
     }
 
+    getID() {
+        return this.id
+    }
+
     static async create(tablename, rows, single = false) {
         let records = []
         for (let row of rows) {
