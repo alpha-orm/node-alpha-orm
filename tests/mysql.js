@@ -11,7 +11,7 @@ DB.setup('mysql', {
 // create()
 // create_2()
 // read()
-read_2()
+// read_2()
 // read_3()
 // update()
 // del()
