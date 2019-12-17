@@ -40,10 +40,11 @@ class DriverInterface {
     static async createColumnsForFind(tablename, where) {
         const { AlphaORM } = require('../alpha-orm')
         const { GeneratorInterface } = require('../generators/generator-interface')
-        const {is_object_empty } = require('../utilities/functions')
+        const { is_object_empty } = require('../utilities/functions')
 
         let alpha_record = await AlphaORM.create(tablename)
         let columns = where.match(/(\w+\s*)(=|!=|>|<|>=|<=)/g)
+
         for (let column of columns) {
             column = column.replace(new RegExp('(=|!=|>|<|>=|<=)', 'g'), '').trim()
             if (column == 'id') { continue }
