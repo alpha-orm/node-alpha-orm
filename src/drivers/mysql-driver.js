@@ -96,25 +96,6 @@ class MySQLDriver extends DriverInterface {
         await this.query(MySQLQueryBuilder.createColumns(tablename, new_columns))
     }
 
-    static async createColumnsForFind(tablename, where) {
-        let alpha_record = await AlphaORM.create(tablename)
-
-        let columns = where.match(/(\w+\s*)(=|!=|>|<|>=|<=)/g)
-        for (let column of columns) {
-            column = column.replace(new RegExp('(=|!=|>|<|>=|<=)', 'g'), '').trim()
-            if (column == 'id') { continue }
-            alpha_record[column] = false
-        }
-
-        let columns_db = await this.getColumns(tablename)
-        let { new_columns } = await MySQLGenerator.columns(
-            columns_db, alpha_record)
-
-        if (!is_object_empty(new_columns)) {
-            await this.createColumns(tablename, new_columns)
-        }
-    }
-
     static async find(tablename, where, map) {
         await this.createColumnsForFind(tablename, where)
 

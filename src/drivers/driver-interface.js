@@ -1,4 +1,5 @@
 const constants = require('../utilities/constants')
+
 class DriverInterface {
     static connect() {
         throw new Error("This driver does not  support the 'connect' function")
@@ -36,8 +37,26 @@ class DriverInterface {
         throw new Error("This driver does not  support the 'createColumns' function")
     }
 
-    static createColumnsForFind(tablename, where) {
-        throw new Error("This driver does not  support the 'createColumns' function")
+    static async createColumnsForFind(tablename, where) {
+        const { AlphaORM } = require('../alpha-orm')
+        const { GeneratorInterface } = require('../generators/generator-interface')
+        const {is_object_empty } = require('../utilities/functions')
+
+        let alpha_record = await AlphaORM.create(tablename)
+        let columns = where.match(/(\w+\s*)(=|!=|>|<|>=|<=)/g)
+        for (let column of columns) {
+            column = column.replace(new RegExp('(=|!=|>|<|>=|<=)', 'g'), '').trim()
+            if (column == 'id') { continue }
+            alpha_record[column] = false
+        }
+
+        let columns_db = await this.getDriver(AlphaORM.DRIVER).getColumns(tablename)
+        let { new_columns } = await GeneratorInterface.getGenerator(AlphaORM.DRIVER).columns(
+            columns_db, alpha_record)
+
+        if (!is_object_empty(new_columns)) {
+            await this.getDriver(AlphaORM.DRIVER).createColumns(tablename, new_columns)
+        }
     }
 
     static find(tablename, where, map) {
