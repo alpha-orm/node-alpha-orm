@@ -5,7 +5,8 @@ const Promise = require('bluebird')
 const sqlite = require('sqlite')
 const { AlphaORM } = require('../alpha-orm')
 const { SQLiteGenerator } = require('../generators/sqlite-generator')
-const { array_difference, get_type, is_object_empty } = require('../utilities')
+const { array_difference, get_type, is_object_empty } = require('../utilities/functions')
+const constants = require('../utilities/constants')
 
 class SQLiteDriver extends DriverInterface {
 
@@ -102,7 +103,7 @@ class SQLiteDriver extends DriverInterface {
     static async find(tablename, where, map) {
         let row = await this.query(SQLiteQueryBuilder.find(true, tablename, where, map), true)
         if (row.length == 0) {
-            throw new Error('No record found for corresponding query')
+            throw new Error(constants.RECORD_NOT_FOUND)
         }
         return await AlphaRecord.create(tablename, row, true)
     }
@@ -159,7 +160,7 @@ class SQLiteDriver extends DriverInterface {
     static async drop(alpha_record) {
         try {
             if (!alpha_record._id) {
-                throw new Error('This Record has not been stored yet!')
+                throw new Error(constants.RECORD_NOT_STORED)
             }
             await this.query(SQLiteQueryBuilder.deleteRecord(alpha_record))
             delete alpha_record._id

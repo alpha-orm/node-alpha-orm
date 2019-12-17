@@ -3,7 +3,8 @@ const { QueryBuilderInterface } = require('./query-builders/query-builder-interf
 const { GeneratorInterface } = require('./generators/generator-interface')
 const { AlphaRecord } = require('./alpha-record')
 const util = require('util')
-const { array_difference, get_type, is_object_empty } = require('./utilities')
+const { array_difference, get_type, is_object_empty } = require('./utilities/functions')
+const constants = require('./utilities/constants')
 
 class AlphaORM {
 
@@ -23,7 +24,7 @@ class AlphaORM {
         this.setDriver(driver)
         for (let option of DriverInterface.getDriver(AlphaORM.DRIVER).REQUIRED_FIELDS) {
             if (options[option] === undefined) {
-                throw new Error(`The '${option}' option is required!`)
+                throw new Error(constants.SETUP_OPTION_MISSING(option))
             }
         }
         this.setOptions(options)

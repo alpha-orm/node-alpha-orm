@@ -40,7 +40,8 @@ class AlphaRecord {
                 return await AlphaORM.find(tablename, 'id = :id', { id })
                 break;
             default:
-                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql`)
+                const constants = require('./utilities/constants')
+                throw new Error(constants.DRIVER_NOT_SUPPORTED(driver))
                 break;
         }
 

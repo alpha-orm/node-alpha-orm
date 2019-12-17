@@ -1,3 +1,4 @@
+const constants = require('../utilities/constants')
 class DriverInterface {
     static connect() {
         throw new Error("This driver does not  support the 'connect' function")
@@ -32,6 +33,10 @@ class DriverInterface {
     }
 
     static createColumns(tablename, new_columns) {
+        throw new Error("This driver does not  support the 'createColumns' function")
+    }
+
+    static createColumnsForFind(tablename, where) {
         throw new Error("This driver does not  support the 'createColumns' function")
     }
 
@@ -71,7 +76,7 @@ class DriverInterface {
                 return PostgreSQLDriver
                 break;
             default:
-                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql, sqlite and pgsql`)
+                throw new Error(constants.DRIVER_NOT_SUPPORTED(driver))
                 break;
         }
     }

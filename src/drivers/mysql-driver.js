@@ -5,12 +5,13 @@ const mysql = require('mysql')
 const util = require('util')
 const { AlphaORM } = require('../alpha-orm')
 const { MySQLGenerator } = require('../generators/mysql-generator')
-const { array_difference, get_type, is_object_empty } = require('../utilities')
+const { array_difference, get_type, is_object_empty } = require('../utilities/functions')
+const constants = require('../utilities/constants')
 
 class MySQLDriver extends DriverInterface {
 
 
-    static get REQUIRED_FIELDS() { return [ 'host', 'database', 'user', 'password' ] }
+    static get REQUIRED_FIELDS() { return ['host', 'database', 'user', 'password'] }
     static get CONNECTION() { return this._connection ? this._connection : '' }
     static set CONNECTION(val) { this._connection = val }
 
@@ -95,15 +96,38 @@ class MySQLDriver extends DriverInterface {
         await this.query(MySQLQueryBuilder.createColumns(tablename, new_columns))
     }
 
+    static async createColumnsForFind(tablename, where) {
+        let alpha_record = await AlphaORM.create(tablename)
+
+        let columns = where.match(/(\w+\s*)(=|!=|>|<|>=|<=)/g)
+        for (let column of columns) {
+            column = column.replace(new RegExp('(=|!=|>|<|>=|<=)', 'g'), '').trim()
+            if (column == 'id') { continue }
+            alpha_record[column] = false
+        }
+
+        let columns_db = await this.getColumns(tablename)
+        let { new_columns } = await MySQLGenerator.columns(
+            columns_db, alpha_record)
+
+        if (!is_object_empty(new_columns)) {
+            await this.createColumns(tablename, new_columns)
+        }
+    }
+
     static async find(tablename, where, map) {
+        await this.createColumnsForFind(tablename, where)
+
         let row = await this.query(MySQLQueryBuilder.find(true, tablename, where, map))
         if (row.length == 0) {
-            throw new Error('No record found for corresponding query')
+            throw new Error(constants.RECORD_NOT_FOUND)
         }
         return await AlphaRecord.create(tablename, row, true)
     }
 
     static async findAll(tablename, where, map) {
+        await this.createColumnsForFind(tablename, where)
+
         let rows = await this.query(MySQLQueryBuilder.find(false, tablename, where, map))
         return await AlphaRecord.create(tablename, rows)
     }
@@ -155,7 +179,7 @@ class MySQLDriver extends DriverInterface {
     static async drop(alpha_record) {
         try {
             if (!alpha_record._id) {
-                throw new Error('This Record has not been stored yet!')
+                throw new Error(constants.RECORD_NOT_STORED)
             }
             await this.query(MySQLQueryBuilder.deleteRecord(alpha_record))
             delete alpha_record._id
@@ -165,7 +189,6 @@ class MySQLDriver extends DriverInterface {
     }
 
     static async dropAll(tablename) {
-        console.log(MySQLQueryBuilder.dropAll(tablename))
         return await this.query(MySQLQueryBuilder.dropAll(tablename))
     }
 

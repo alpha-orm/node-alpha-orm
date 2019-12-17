@@ -1,4 +1,5 @@
-const { array_difference, get_type, is_object_empty } = require('../utilities')
+const { array_difference, get_type, is_object_empty } = require('../utilities/functions')
+const constants = require('../utilities/constants')
 
 class PostgreSQLQueryBuilder {
 
@@ -93,13 +94,13 @@ class PostgreSQLQueryBuilder {
             return sql
         }
         if (matches.length !== Object.keys(map).length) {
-            throw new Error('Number of bounded parameters is not equal to variables')
+            throw new Error(constants.UNEQUAL_BOUNDED_PARAMETER)
         }
         matches.forEach((match) => {
             let i = match.replace(':', '')
             let val = map[i]
             if (val === undefined) {
-                throw new Error(`Variable '${i}' is not present in parameters`)
+                throw new Error(constants.VARIABLE_NOT_PRESENT(i))
             }
             val = (typeof(val) === 'string') ? val.replace('\'', '\\\'') : val
             if (typeof(val) === 'boolean') {
@@ -114,7 +115,7 @@ class PostgreSQLQueryBuilder {
     }
 
     static dropAll(tablename) {
-        return `DROP FROM \`${tablename}\``
+        return `DELETE FROM \`${tablename}\``
     }
 }
 

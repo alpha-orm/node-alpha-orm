@@ -1,3 +1,4 @@
+const constants = require('../utilities/constants')
 class GeneratorInterface {
 
     static checkColumnUpdates(columns_db, columns_record, alpha_record) {
@@ -28,7 +29,7 @@ class GeneratorInterface {
                 return PostgreSQLGenerator
                 break;
             default:
-                throw new Error(`'${driver}' is not a supported database. Supported databases includes mysql, sqlite and pgsql`)
+                throw new Error(constants.DRIVER_NOT_SUPPORTED(driver))
                 break;
         }
     }

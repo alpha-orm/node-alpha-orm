@@ -1,6 +1,7 @@
 const { GeneratorInterface } = require('./generator-interface')
 const { SQLiteQueryBuilder } = require('../query-builders/sqlite-query-builder')
-const { array_difference, get_type, is_object_empty } = require('../utilities')
+const { array_difference, get_type, is_object_empty } = require('../utilities/functions')
+const constants = require('../utilities/constants')
 const { AlphaRecord } = require('../alpha-record')
 const { AlphaORM } = require('../alpha-orm')
 
@@ -17,7 +18,7 @@ class SQLiteGenerator extends GeneratorInterface {
                 // if type is not supported
                 if (col.name !== 'id' & !(col.type.startsWith(SQLiteQueryBuilder.DATA_TYPE[get_type(alpha_record[col.name])]))) {
                     if (!AlphaORM.DATA_TYPES.includes(typeof(col.name))) {
-                        throw new Error(`Values of can only be number, string or boolean`)
+                        throw new Error(constants.DB_VARIABLE_ERROR)
                         //  if colum is int but value comming in is not an int
                     } else if (col.type.startsWith(SQLiteQueryBuilder.DATA_TYPE['int']) & (get_type(alpha_record[col.name]) !== 'boolean')) {
                         updated_columns[col.name] = SQLiteQueryBuilder.DATA_TYPE[get_type(alpha_record[col.name])]
@@ -44,7 +45,7 @@ class SQLiteGenerator extends GeneratorInterface {
             if (col instanceof AlphaRecord) {
                 this.columns(col._tablename, col)
             } else if (!AlphaORM.DATA_TYPES.includes(typeof(col))) {
-                throw new Error(`Values can only be number, string or boolean`)
+                throw new Error(constants.DB_VARIABLE_ERROR)
             } else {
                 if (alpha_record[col] instanceof AlphaRecord) {
                     new_columns[`${alpha_record[col]._tablename}_id`] = SQLiteQueryBuilder.DATA_TYPE['int']

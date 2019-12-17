@@ -4,7 +4,8 @@ const { AlphaRecord } = require('../alpha-record')
 const { Pool } = require('pg')
 const { AlphaORM } = require('../alpha-orm')
 const { PostgreSQLGenerator } = require('../generators/postgresql-generator')
-const { array_difference, get_type, is_object_empty } = require('../utilities')
+const { array_difference, get_type, is_object_empty } = require('../utilities/functions')
+const constants = require('../utilities/constants')
 
 class PostgreSQLDriver extends DriverInterface {
 
@@ -97,7 +98,7 @@ class PostgreSQLDriver extends DriverInterface {
         let row = await this.query(PostgreSQLQueryBuilder.find(true, tablename, where, map))
         row = row.rows
         if (row.length == 0) {
-            throw new Error('No record found for corresponding query')
+            throw new Error(constants.RECORD_NOT_FOUND)
         }
         return await AlphaRecord.create(tablename, row, true)
     }
@@ -157,7 +158,7 @@ class PostgreSQLDriver extends DriverInterface {
     static async drop(alpha_record) {
         try {
             if (!alpha_record._id) {
-                throw new Error('This Record has not been stored yet!')
+                throw new Error(constants.RECORD_NOT_STORED)
             }
             await this.query(PostgreSQLQueryBuilder.deleteRecord(alpha_record))
             delete alpha_record._id
