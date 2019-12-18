@@ -43,6 +43,8 @@ class MySQLDriver extends DriverInterface {
     }
 
     static async getAll(tablename) {
+        await this.createColumnsForFind(tablename, 'id = :id')
+
         let rows = await this.query(MySQLQueryBuilder.getAllRecords(tablename))
         return await AlphaRecord.create(tablename, rows)
     }

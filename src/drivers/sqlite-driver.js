@@ -41,6 +41,8 @@ class SQLiteDriver extends DriverInterface {
     }
 
     static async getAll(tablename) {
+        await this.createColumnsForFind(tablename, 'id = :id')
+        
         let rows = await this.query(SQLiteQueryBuilder.getAllRecords(tablename), true)
         return await AlphaRecord.create(tablename, rows)
     }
@@ -101,6 +103,8 @@ class SQLiteDriver extends DriverInterface {
     }
 
     static async find(tablename, where, map) {
+        await this.createColumnsForFind(tablename, where)
+
         let row = await this.query(SQLiteQueryBuilder.find(true, tablename, where, map), true)
         if (row.length == 0) {
             throw new Error(constants.RECORD_NOT_FOUND)
@@ -109,6 +113,8 @@ class SQLiteDriver extends DriverInterface {
     }
 
     static async findAll(tablename, where, map) {
+        await this.createColumnsForFind(tablename, where)
+
         let rows = await this.query(SQLiteQueryBuilder.find(false, tablename, where, map), true)
         return await AlphaRecord.create(tablename, rows)
     }

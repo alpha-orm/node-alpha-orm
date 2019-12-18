@@ -40,6 +40,8 @@ class PostgreSQLDriver extends DriverInterface {
     }
 
     static async getAll(tablename) {
+        await this.createColumnsForFind(tablename, 'id = :id')
+        
         let rows = await this.query(PostgreSQLQueryBuilder.getAllRecords(tablename))
         rows = rows.rows
         return await AlphaRecord.create(tablename, rows)
@@ -95,6 +97,8 @@ class PostgreSQLDriver extends DriverInterface {
     }
 
     static async find(tablename, where, map) {
+        await this.createColumnsForFind(tablename, where)
+
         let row = await this.query(PostgreSQLQueryBuilder.find(true, tablename, where, map))
         row = row.rows
         if (row.length == 0) {
@@ -104,6 +108,8 @@ class PostgreSQLDriver extends DriverInterface {
     }
 
     static async findAll(tablename, where, map) {
+        await this.createColumnsForFind(tablename, where)
+
         let rows = await this.query(PostgreSQLQueryBuilder.find(false, tablename, where, map))
         rows = rows.rows
         return await AlphaRecord.create(tablename, rows)
