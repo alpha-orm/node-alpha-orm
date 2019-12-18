@@ -24,7 +24,7 @@ class SQLiteGenerator extends GeneratorInterface {
                         updated_columns[col.name] = SQLiteQueryBuilder.DATA_TYPE[get_type(alpha_record[col.name])]
                         // if colum is boolean but value coming in is not boolean
                     } else if (col.type.startsWith(SQLiteQueryBuilder.DATA_TYPE['boolean']) & (typeof alpha_record[col.name] !== 'boolean')) {
-                        if (typeof alpha_record[col.name] !== 'number') {
+                        if (typeof alpha_record[col.name] == 'number') {
                             updated_columns[col.name] = SQLiteQueryBuilder.DATA_TYPE[get_type(alpha_record[col.name])]
                         } else {
                             updated_columns[col.name] = SQLiteQueryBuilder.DATA_TYPE['string']

@@ -22,7 +22,7 @@ class PostgreSQLGenerator extends GeneratorInterface {
                         updated_columns[col.Field] = PostgreSQLQueryBuilder.DATA_TYPE[get_type(alpha_record[col.Field])]
                         // if colum is boolean but value coming in is not boolean
                     } else if (col.Type.startsWith(PostgreSQLQueryBuilder.DATA_TYPE['boolean']) & (typeof alpha_record[col.Field] !== 'boolean')) {
-                        if (typeof alpha_record[col.Field] !== 'number') {
+                        if (typeof alpha_record[col.Field] == 'number') {
                             updated_columns[col.Field] = PostgreSQLQueryBuilder.DATA_TYPE[get_type(alpha_record[col.Field])]
                         } else {
                             updated_columns[col.Field] = PostgreSQLQueryBuilder.DATA_TYPE['string']
