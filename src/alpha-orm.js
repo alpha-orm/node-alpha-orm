@@ -36,7 +36,7 @@ class AlphaORM {
 
             for (let col in alpha_record) {
                 if (col == '_tablename' | col == '_id') { continue }
-                if (col.includes('_')) { throw new Error('Column names cannot contain `_` symbol') }
+                // if (col.includes('_')) { throw new Error('Column names cannot contain `_` symbol') }
                 if ((col.indexOf(' ') > -1)) { throw new Error('Column names should not have a space') }
             }
             alpha_record = await DriverInterface.getDriver(AlphaORM.DRIVER).store(alpha_record)
